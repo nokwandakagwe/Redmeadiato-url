@@ -1,7 +1,7 @@
 {
   "name": "gifted-cdn",
   "version": "1.2.6",
-  "description": "File management service",
+  "description": "File management service using cloudflare r2 object storage via AWS s3-client sdk",
   "main": "./api/index.js",
   "scripts": {
     "start": "node ./api/index.js",
@@ -24,17 +24,17 @@
   },
   "dependencies": {
     "@aws-sdk/client-s3": "*",
-    "@vercel/blob": "*",
-    "axios": "^1.9.0",
-    "cors": "^2.8.5",
+    "axios": "*",
+    "cors": "*",
+    "pm2": "*",
     "dotenv": "*",
     "express": "*",
-    "express-rate-limit": "^7.5.0",
-    "form-data": "^4.0.2",
-    "helmet": "^8.1.0",
+    "express-rate-limit": "*",
+    "form-data": "*",
+    "helmet": "*",
     "mongoose": "*",
     "multer": "*",
-    "winston": "^3.17.0"
+    "winston": "*"
   },
   "devDependencies": {
     "eslint": "*",
