@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Gifted File Cdn - Easily upload  & managefiles with a user-friendly interface. Supports all file types.">
+  <meta property="og:title" content="Gifted File Cdn">
+  <meta property="og:description" content="Upload & manage files quickly and easily with Gifted Cdn. Supports all file types.">
+  <meta property="og:image" content="https://telegra.ph/file/c2a4d8d65722553da4c89.jpg">
+  <meta property="og:url" content="https://cdn.giftedtech.web.id/upload">
+  <title>GIFTED CDN API Documentation</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.10/clipboard.min.js"></script>
+  <style>
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .fade-in {
+      animation: fadeIn 0.6s ease-out forwards;
+    }
+    
+    .delay-100 { animation-delay: 0.1s; }
+    .delay-200 { animation-delay: 0.2s; }
+    .delay-300 { animation-delay: 0.3s; }
+    .delay-400 { animation-delay: 0.4s; }
+    
+    .code-block {
+      position: relative;
+    }
+    
+    .copy-btn {
+      position: absolute;
+      right: 0.5rem;
+      top: 0.5rem;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    
+    .code-block:hover .copy-btn {
+      opacity: 1;
+    }
+    
+    .copied::after {
+      content: 'Copied!';
+      position: absolute;
+      right: 2.5rem;
+      top: 0.5rem;
+      background: #4CAF50;
+      color: white;
+      padding: 0.2rem 0.5rem;
+      border-radius: 0.25rem;
+      font-size: 0.75rem;
+    }
+    
+    #particles-js {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      opacity: 0.3;
+    }
+    
+    .nav-link {
+      position: relative;
+    }
+    
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: #4CAF50;
+      transition: width 0.3s ease;
+    }
+    
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    
+    .active-nav {
+      color: #4CAF50;
+    }
+    
+    .active-nav::after {
+      width: 100%;
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.5s ease-out;
+    }
+    
+    .tab-button {
+      transition: all 0.3s ease;
+    }
+    
+    .tab-button.active {
+      background-color: rgba(76, 175, 80, 0.1);
+      color: #4CAF50;
+      border-bottom: 2px solid #4CAF50;
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen">
+  <!-- Background Animation -->
+  <div id="particles-js"></div>
+  
+  <!-- Header -->
+  <header class="bg-gray-800/80 backdrop-blur-md py-4 px-6 shadow-md sticky top-0 z-50">
+    <div class="container mx-auto flex justify-between items-center">
+      <div class="flex items-center space-x-3">
+        <img src="https://telegra.ph/file/c2a4d8d65722553da4c89.jpg" alt="Logo" class="w-10 h-10 rounded-full">
+        <h1 class="text-xl font-bold">Gifted Cdn</h1>
+      </div>
+      <nav class="hidden md:block">
+        <ul class="flex space-x-6">
+          <li><a href="/" class="nav-link">Home</a></li>
+          <li><a href="#overview" class="nav-link active-nav">Overview</a></li>
+          <li><a href="#upload" class="nav-link">Upload</a></li>
+          <li><a href="#delete" class="nav-link">Delete</a></li>
+          <li><a href="#examples" class="nav-link">Examples</a></li>
+        </ul>
+      </nav>
+      <button id="mobile-menu-button" class="md:hidden text-gray-400 hover:text-white">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="md:hidden fixed inset-0 bg-gray-900/90 z-50 backdrop-blur-sm hidden">
+    <div class="flex justify-end p-4">
+      <button id="close-mobile-menu" class="text-gray-400 hover:text-white">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+    <div class="flex flex-col items-center justify-center h-full space-y-8">
+      <a href="/" class="text-2xl nav-link" onclick="goHome(event)">Home</a>
+      <a href="#overview" class="text-2xl nav-link active-nav" onclick="toggleMobileMenu()">Overview</a>
+      <a href="#upload" class="text-2xl nav-link" onclick="toggleMobileMenu()">Upload</a>
+      <a href="#delete" class="text-2xl nav-link" onclick="toggleMobileMenu()">Delete</a>
+      <a href="#examples" class="text-2xl nav-link" onclick="toggleMobileMenu()">Examples</a>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="container mx-auto px-4 py-8 max-w-6xl">
+    <!-- Overview Section -->
+    <section id="overview" class="mb-16 fade-in">
+      <div class="bg-gray-800/50 rounded-xl p-6 backdrop-blur-sm border border-gray-700 shadow-lg">
+        <h2 class="text-3xl font-bold mb-4 text-primary">API Overview</h2>
+        <p class="text-gray-300 mb-6">
+          The Gifted Cdn API (v1.2.6) provides simple endpoints for uploading and deleting files with optional delete keys for secure file management.
+          Files uploaded without a delete key cannot be deleted through the API unless you contact Owner.
+        </p>
+        
+        <div class="grid md:grid-cols-2 gap-6">
+          <div class="bg-gray-800 rounded-lg p-4 border border-gray-700">
+            <h3 class="text-xl font-semibold mb-3 text-primary">Base URL</h3>
+            <div class="code-block bg-gray-900 rounded p-4 font-mono text-sm relative">
+              <span class="text-green-400">https://cdn.giftedtech.web.id</span>
+              <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-2 py-1 rounded text-xs" data-clipboard-text="https://cdn.giftedtech.web.id">
+                Copy
+              </button>
+            </div>
+          </div>
+          
+          <div class="bg-gray-800 rounded-lg p-4 border border-gray-700">
+            <h3 class="text-xl font-semibold mb-3 text-primary">Endpoints</h3>
+            <ul class="space-y-2">
+              <li class="flex items-center">
+                <span class="bg-green-500/20 text-green-400 px-2 py-1 rounded mr-2 text-xs">POST</span>
+                <span>/api/upload.php</span>
+              </li>
+              <li class="flex items-center">
+                <span class="bg-red-500/20 text-red-400 px-2 py-1 rounded mr-2 text-xs">DELETE</span>
+                <span>/api/delete.php</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Upload Section -->
+    <section id="upload" class="mb-16 fade-in delay-100">
+      <div class="bg-gray-800/50 rounded-xl p-6 backdrop-blur-sm border border-gray-700 shadow-lg">
+        <h2 class="text-3xl font-bold mb-4 text-primary">Uploading Files</h2>
+        <p class="text-gray-300 mb-6">
+          Upload files to the CDN with optional delete key. If no delete key is provided, the file cannot be deleted through the API.
+        </p>
+        
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-3 text-primary">Request</h3>
+          <div class="overflow-x-auto">
+            <table class="min-w-full border border-gray-700">
+              <thead class="bg-gray-700">
+                <tr>
+                  <th class="px-4 py-2 text-left">Parameter</th>
+                  <th class="px-4 py-2 text-left">Type</th>
+                  <th class="px-4 py-2 text-left">Required</th>
+                  <th class="px-4 py-2 text-left">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="border-b border-gray-700">
+                  <td class="px-4 py-2 font-mono">file</td>
+                  <td class="px-4 py-2">File</td>
+                  <td class="px-4 py-2">Yes</td>
+                  <td class="px-4 py-2">The file to upload (multipart/form-data)</td>
+                </tr>
+                <tr class="border-b border-gray-700">
+                  <td class="px-4 py-2 font-mono">deleteKey</td>
+                  <td class="px-4 py-2">String</td>
+                  <td class="px-4 py-2">No</td>
+                  <td class="px-4 py-2">Key required to delete the file later (if omitted, file cannot be deleted)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="text-xl font-semibold mb-3 text-primary">Response</h3>
+          <div class="code-block bg-gray-900 rounded p-4 font-mono text-sm relative">
+            <pre><code class="language-json">{
+  "name": "6Jexample_image.jpg",
+  "path": "image/6Jexample_image.jpg",
+  "url": "https://cdn.giftedtech.web.id/image/6Jexample_image.jpg",
+  "size": "245KB",
+  "mimetype": "image/jpeg",
+  "storageClass": "Standard",
+  "modified": "2023-05-18T12:34:56.789Z",
+  "_id": "6465f3a7e4b0d4a9e4b0d4a9",
+  "createdAt": "2023-05-18T12:34:56.789Z",
+  "deleteKey": "your_delete_key_here" // Only if provided
+}</code></pre>
+            <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-2 py-1 rounded text-xs" data-clipboard-target="#upload-response">
+              Copy
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Delete Section -->
+    <section id="delete" class="mb-16 fade-in delay-200">
+      <div class="bg-gray-800/50 rounded-xl p-6 backdrop-blur-sm border border-gray-700 shadow-lg">
+        <h2 class="text-3xl font-bold mb-4 text-primary">Deleting Files</h2>
+        <p class="text-gray-300 mb-6">
+          Delete files from the CDN. Requires the filename and the delete key that was provided during upload.
+        </p>
+        
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-3 text-primary">Request</h3>
+          <div class="overflow-x-auto">
+            <table class="min-w-full border border-gray-700">
+              <thead class="bg-gray-700">
+                <tr>
+                  <th class="px-4 py-2 text-left">Parameter</th>
+                  <th class="px-4 py-2 text-left">Type</th>
+                  <th class="px-4 py-2 text-left">Required</th>
+                  <th class="px-4 py-2 text-left">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="border-b border-gray-700">
+                  <td class="px-4 py-2 font-mono">fileName</td>
+                  <td class="px-4 py-2">String</td>
+                  <td class="px-4 py-2">Yes</td>
+                  <td class="px-4 py-2">The name of the file to delete</td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-2 font-mono">deleteKey</td>
+                  <td class="px-4 py-2">String</td>
+                  <td class="px-4 py-2">Yes</td>
+                  <td class="px-4 py-2">The delete key provided during upload</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="text-xl font-semibold mb-3 text-primary">Response</h3>
+          <div class="code-block bg-gray-900 rounded p-4 font-mono text-sm relative">
+            <pre><code class="language-json">{
+  "name": "6Jexample_image.jpg",
+  "path": "image/6Jexample_image.jpg",
+  "deleted": true,
+  "_id": "6465f3a7e4b0d4a9e4b0d4a9",
+  "deletedFromDb": true,
+  "deletedFromServer": true
+}</code></pre>
+            <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-2 py-1 rounded text-xs" data-clipboard-target="#delete-response">
+              Copy
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Examples Section -->
+    <section id="examples" class="fade-in delay-300">
+      <div class="bg-gray-800/50 rounded-xl p-6 backdrop-blur-sm border border-gray-700 shadow-lg">
+        <h2 class="text-3xl font-bold mb-6 text-primary">Code Examples</h2>
+        
+        <!-- Tab Navigation -->
+        <div class="flex overflow-x-auto mb-6 border-b border-gray-700">
+          <button class="tab-button px-4 py-2 font-medium text-gray-400 hover:text-white active" data-tab="nodejs">Node.js</button>
+          <button class="tab-button px-4 py-2 font-medium text-gray-400 hover:text-white" data-tab="python">Python</button>
+          <button class="tab-button px-4 py-2 font-medium text-gray-400 hover:text-white" data-tab="php">PHP</button>
+          <button class="tab-button px-4 py-2 font-medium text-gray-400 hover:text-white" data-tab="curl">cURL</button>
+        </div>
+        
+        <!-- Upload Examples -->
+        <h3 class="text-2xl font-semibold mb-4 text-primary">Upload Examples</h3>
+        
+        <!-- Node.js Upload -->
+        <div id="nodejs-upload" class="tab-content active" data-tab-content="nodejs">
+          <div class="code-block bg-gray-900 rounded p-4 font-mono text-sm relative mb-6">
+            <pre><code class="language-javascript">const fs = require('fs');
+const FormData = require('form-data');
+const axios = require('axios');
+
+const filePath = './example.jpg';
+const deleteKey = 'your_secret_key'; // Optional
+
+const form = new FormData();
+form.append('file', fs.createReadStream(filePath));
+if (deleteKey) form.append('deleteKey', deleteKey);
+
+axios.post('https://cdn.giftedtech.web.id/api/upload.php', form, {
+  headers: form.getHeaders()
+})
+.then(response => {
+  console.log('Upload successful:', response.data);
+})
+.catch(error => {
+  console.error('Upload failed:', error.response?.data || error.message);
+});</code></pre>
+            <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-2 py-1 rounded text-xs" data-clipboard-target="#nodejs-upload-code">
+              Copy
+            </button>
+          </div>
+        </div>
+        
+        <!-- Python Upload -->
+        <div id="python-upload" class="tab-content" data-tab-content="python">
+          <div class="code-block bg-gray-900 rounded p-4 font-mono text-sm relative mb-6">
+            <pre><code class="language-python">import requests
+
+url = 'https://cdn.giftedtech.web.id/api/upload.php'
+file_path = 'example.jpg'
+delete_key = 'your_secret_key'  # Optional
+
+with open(file_path, 'rb') as f:
+    files = {'file': f}
+    data = {'deleteKey': delete_key} if delete_key else {}
+    response = requests.post(url, files=files, data=data)
+
+if response.status_code == 200:
+    print('Upload successful:', response.json())
+else:
+    print('Upload failed:', response.text)</code></pre>
+            <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-2 py-1 rounded text-xs" data-clipboard-target="#python-upload-code">
+              Copy
+            </button>
+          </div>
+        </div>
+        
+        <!-- PHP Upload -->
+        <div id="php-upload" class="tab-content" data-tab-content="php">
+          <div class="code-block bg-gray-900 rounded p-4 font-mono text-sm relative mb-6">
+            <pre><code class="language-php"><?php
+$url = 'https://cdn.giftedtech.web.id/api/upload.php';
+$file_path = 'example.jpg';
+$delete_key = 'your_secret_key'; // Optional
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_POST, true);
+
+$post_fields = [
+    'file' => new CURLFile($file_path),
+];
+if (!empty($delete_key)) {
+    $post_fields['deleteKey'] = $delete_key;
+}
+
+curl_setopt($ch, CURLOPT_POSTFIELDS, $post_fields);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+$response = curl_exec($ch);
+$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+curl_close($ch);
+
+if ($http_code == 200) {
+    echo 'Upload successful: ' . $response;
+} else {
+    echo 'Upload failed: ' . $response;
+}
+?></code></pre>
+            <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-2 py-1 rounded text-xs" data-clipboard-target="#php-upload-code">
+              Copy
+            </button>
+          </div>
+        </div>
+        
+        <!-- cURL Upload -->
+        <div id="curl-upload" class="tab-content" data-tab-content="curl">
+          <div class="code-block bg-gray-900 rounded p-4 font-mono text-sm relative mb-6">
+            <pre><code class="language-bash">curl -X POST https://cdn.giftedtech.web.id/api/upload.php \
+  -F "file=@example.jpg" \
+  -F "deleteKey=your_secret_key"  # Optional</code></pre>
+            <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-2 py-1 rounded text-xs" data-clipboard-target="#curl-upload-code">
+              Copy
+            </button>
+          </div>
+        </div>
+        
+        <!-- Delete Examples -->
+        <h3 class="text-2xl font-semibold mb-4 text-primary mt-8">Delete Examples</h3>
+        
+        <!-- Node.js Delete -->
+        <div id="nodejs-delete" class="tab-content active" data-tab-content="nodejs">
+          <div class="code-block bg-gray-900 rounded p-4 font-mono text-sm relative mb-6">
+            <pre><code class="language-javascript">const axios = require('axios');
+
+const fileName = '6Jexample_image.jpg';
+const deleteKey = 'your_secret_key';
+
+axios.delete('https://cdn.giftedtech.web.id/api/delete.php', {
+  data: { fileName, deleteKey }
+})
+.then(response => {
+  console.log('Delete successful:', response.data);
+})
+.catch(error => {
+  console.error('Delete failed:', error.response?.data || error.message);
+});</code></pre>
+            <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-2 py-1 rounded text-xs" data-clipboard-target="#nodejs-delete-code">
+              Copy
+            </button>
+          </div>
+        </div>
+        
+        <!-- Python Delete -->
+        <div id="python-delete" class="tab-content" data-tab-content="python">
+          <div class="code-block bg-gray-900 rounded p-4 font-mono text-sm relative mb-6">
+            <pre><code class="language-python">import requests
+
+url = 'https://cdn.giftedtech.web.id/api/delete.php'
+data = {
+    'fileName': '6Jexample_image.jpg',
+    'deleteKey': 'your_secret_key'
+}
+
+response = requests.delete(url, json=data)
+
+if response.status_code == 200:
+    print('Delete successful:', response.json())
+else:
+    print('Delete failed:', response.text)</code></pre>
+            <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-2 py-1 rounded text-xs" data-clipboard-target="#python-delete-code">
+              Copy
+            </button>
+          </div>
+        </div>
+        
+        <!-- PHP Delete -->
+        <div id="php-delete" class="tab-content" data-tab-content="php">
+          <div class="code-block bg-gray-900 rounded p-4 font-mono text-sm relative mb-6">
+            <pre><code class="language-php"><?php
+$url = 'https://cdn.giftedtech.web.id/api/delete.php';
+$data = [
+    'fileName' => '6Jexample_image.jpg',
+    'deleteKey' => 'your_secret_key'
+];
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+$response = curl_exec($ch);
+$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+curl_close($ch);
+
+if ($http_code == 200) {
+    echo 'Delete successful: ' . $response;
+} else {
+    echo 'Delete failed: ' . $response;
+}
+?></code></pre>
+            <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-2 py-1 rounded text-xs" data-clipboard-target="#php-delete-code">
+              Copy
+            </button>
+          </div>
+        </div>
+        
+        <!-- cURL Delete -->
+        <div id="curl-delete" class="tab-content" data-tab-content="curl">
+          <div class="code-block bg-gray-900 rounded p-4 font-mono text-sm relative mb-6">
+            <pre><code class="language-bash">curl -X DELETE https://cdn.giftedtech.web.id/api/delete.php \
+  -H "Content-Type: application/json" \
+  -d '{"fileName": "6Jexample_image.jpg", "deleteKey": "your_secret_key"}'</code></pre>
+            <button class="copy-btn bg-gray-700 hover:bg-gray-600 text-white px-2 py-1 rounded text-xs" data-clipboard-target="#curl-delete-code">
+              Copy
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800/80 backdrop-blur-md py-6 mt-12 border-t border-gray-700">
+    <div class="container mx-auto px-4 text-center text-gray-400">
+      <p>&copy; <span id="current-year"></span> Gifted Tech. ❤</p>
+      <p class="mt-2 text-sm">API Version 1.2.6</p>
+    </div>
+  </footer>
+
+  <script>
+    // Initialize particles.js
+    document.addEventListener('DOMContentLoaded', function() {
+      particlesJS('particles-js', {
+        particles: {
+          number: { value: 60, density: { enable: true, value_area: 800 } },
+          color: { value: "#4CAF50" },
+          shape: { type: "circle" },
+          opacity: { value: 0.5, random: true },
+          size: { value: 3, random: true },
+          line_linked: { enable: true, distance: 150, color: "#4CAF50", opacity: 0.4, width: 1 },
+          move: { enable: true, speed: 2, direction: "none", random: true, straight: false, out_mode: "out" }
+        },
+        interactivity: {
+          detect_on: "canvas",
+          events: {
+            onhover: { enable: true, mode: "repulse" },
+            onclick: { enable: true, mode: "push" }
+          }
+        }
+      });
+      
+      // Set current year
+      document.getElementById('current-year').textContent = new Date().getFullYear();
+      
+      // Initialize syntax highlighting
+      hljs.highlightAll();
+      
+      // Initialize clipboard.js
+      new ClipboardJS('.copy-btn');
+      
+      // Add copied feedback
+      document.querySelectorAll('.copy-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          this.classList.add('copied');
+          setTimeout(() => {
+            this.classList.remove('copied');
+          }, 2000);
+        });
+      });
+      
+      // Smooth scrolling for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            window.scrollTo({
+              top: target.offsetTop - 80,
+              behavior: 'smooth'
+            });
+          }
+        });
+      });
+      
+      // Tab functionality
+      const tabButtons = document.querySelectorAll('.tab-button');
+      tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const tabName = button.getAttribute('data-tab');
+          
+          // Update active tab button
+          tabButtons.forEach(btn => btn.classList.remove('active'));
+          button.classList.add('active');
+          
+          // Show corresponding content
+          document.querySelectorAll('.tab-content').forEach(content => {
+            content.classList.remove('active');
+          });
+          
+          document.querySelectorAll(`[data-tab-content="${tabName}"]`).forEach(content => {
+            content.classList.add('active');
+          });
+          
+          // Also show corresponding delete examples
+          document.querySelectorAll(`[data-tab-content="${tabName}-delete"]`).forEach(content => {
+            content.classList.add('active');
+          });
+        });
+      });
+      
+      // Mobile menu functionality
+      const mobileMenuButton = document.getElementById('mobile-menu-button');
+      const closeMobileMenu = document.getElementById('close-mobile-menu');
+      const mobileMenu = document.getElementById('mobile-menu');
+      
+      function toggleMobileMenu() {
+        mobileMenu.classList.toggle('hidden');
+      }
+
+      function goHome(event) {
+      toggleMobileMenu();
+       window.location.href = '/';
+       }
+      
+      mobileMenuButton.addEventListener('click', toggleMobileMenu);
+      closeMobileMenu.addEventListener('click', toggleMobileMenu);
+      
+      // Update active nav link based on scroll position
+      const sections = document.querySelectorAll('section');
+      const navLinks = document.querySelectorAll('.nav-link');
+      
+      window.addEventListener('scroll', () => {
+        let current = '';
+        
+        sections.forEach(section => {
+          const sectionTop = section.offsetTop;
+          const sectionHeight = section.clientHeight;
+          
+          if (pageYOffset >= sectionTop - 100) {
+            current = section.getAttribute('id');
+          }
+        });
+        
+        navLinks.forEach(link => {
+          link.classList.remove('active-nav');
+          if (link.getAttribute('href') === `#${current}`) {
+            link.classList.add('active-nav');
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

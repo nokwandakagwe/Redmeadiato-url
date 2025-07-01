@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Gifted File Cdn - Easily upload  & managefiles with a user-friendly interface. Supports all file types.">
+  <meta property="og:title" content="Gifted File Cdn">
+  <meta property="og:description" content="Upload & manage files quickly and easily with Gifted Cdn. Supports all file types.">
+  <meta property="og:image" content="https://telegra.ph/file/c2a4d8d65722553da4c89.jpg">
+  <meta property="og:url" content="https://cdn.giftedtech.web.id/upload">
+  <title>GIFTED CDN || FILE MANAGEMENT</title>
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <style>
+    .cf-turnstile {
+      transform: scale(0.8); 
+      transform-origin: top center; 
+      margin: 10px 0; 
+    }
+    .spinner {
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .sticky-header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+    /* Mobile header spacing adjustment */
+    @media (max-width: 767px) {
+      .mobile-header {
+        margin-bottom: 0 !important;
+      }
+      .mobile-container {
+        margin-top: 0 !important;
+      }
+    }
+    /* Animations */
+    .blinking-button {
+      animation: blink 2s infinite;
+    }
+    @keyframes blink {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); }
+      50% { box-shadow: 0 0 0 10px rgba(76, 175, 80, 0); }
+    }
+    .heartbeat {
+      animation: heartbeat 1.5s infinite;
+    }
+    @keyframes heartbeat {
+      0% { transform: scale(1); opacity: 1; }
+      25% { transform: scale(1.1); opacity: 0.8; }
+      50% { transform: scale(1); opacity: 1; }
+      75% { transform: scale(1.1); opacity: 0.8; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .bouncing-cloud {
+      animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    .typing-text {
+      border-right: 2px solid;
+      animation: typing 3s steps(40) forwards, blink-caret 0.75s step-end infinite;
+      white-space: nowrap;
+      overflow: hidden;
+      display: inline-block;
+    }
+    @keyframes typing {
+      0% { width: 0 }
+      100% { width: 100% }
+    }
+    @keyframes blink-caret {
+      from, to { border-color: transparent }
+      50% { border-color: #4CAF50 }
+    }
+    .underline-animation {
+      position: relative;
+      display: inline-block;
+    }
+    .underline-animation:after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -2px;
+      left: 0;
+      background-color: #4CAF50;
+      animation: underline 3s linear infinite;
+    }
+    @keyframes underline {
+      0% { width: 0; left: 0; }
+      50% { width: 100%; left: 0; }
+      100% { width: 0; left: 100%; }
+    }
+    .active-nav-item {
+      position: relative;
+      color: #4CAF50 !important;
+    }
+    .active-nav-item:before {
+      content: '';
+      position: absolute;
+      left: -10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 4px;
+      height: 20px;
+      background-color: #4CAF50;
+      border-radius: 2px;
+    }
+    .active-nav-item:after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: #4CAF50;
+    }
+    #particles-js {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      opacity: 0.5;
+    }
+    .side-menu-bg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      background: linear-gradient(135deg, rgba(46,52,64,0.8) 0%, rgba(59,66,82,0.8) 100%);
+    }
+    .side-menu-particles {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      opacity: 0.5;
+    }
+  </style>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#4CAF50',
+            secondary: '#2d3748',
+            danger: '#f44336',
+            dark: '#121212',
+            'dark-light': '#1e1e1e',
+          },
+          borderRadius: {
+            'xl': '1rem',
+            '2xl': '2rem',
+            '3xl': '3rem',
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen">
+  <!-- Futuristic Background -->
+  <div id="particles-js"></div>
+  
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed top-4 right-4 z-50 hidden">
+    <div class="px-4 py-2 rounded-md text-white"></div>
+  </div>
+  
+  <!-- Mobile Side Menu Overlay -->
+  <div id="mobile-menu-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden backdrop-blur-sm"></div>
+  
+  <!-- Mobile Side Menu -->
+  <div id="mobile-menu" class="fixed inset-y-0 left-0 w-64 bg-gray-800 z-50 transform -translate-x-full transition-transform duration-300 ease-in-out rounded-br-3xl rounded-tr-3xl overflow-hidden">
+    <div class="side-menu-bg"></div>
+    <div class="side-menu-particles" id="side-menu-particles"></div>
+    
+    <div class="flex justify-between items-center p-4 border-b border-gray-700 relative">
+      <div class="flex items-center space-x-2">
+        <img src="https://telegra.ph/file/c2a4d8d65722553da4c89.jpg" alt="Logo" class="w-10 h-10 rounded-full">
+        <span class="font-bold">Gifted Cdn</span>
+      </div>
+      <button id="close-mobile-menu" class="text-gray-400 hover:text-white">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+    <nav class="p-4 relative">
+      <ul class="space-y-2">
+        <li>
+          <a href="/" class="flex items-center space-x-2 px-4 py-2 rounded-md hover:bg-gray-700 active-nav-item">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 heartbeat" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+            </svg>
+            <span>Home</span>
+          </a>
+        </li>
+        <li>
+          <a href="/delete" class="flex items-center space-x-2 px-4 py-2 rounded-md hover:bg-gray-700">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 heartbeat" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            </svg>
+            <span>Delete</span>
+          </a>
+        </li>
+        <li>
+          <a href="/contact" class="flex items-center space-x-2 px-4 py-2 rounded-md hover:bg-gray-700">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 heartbeat" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+            <span>Contact</span>
+          </a>
+        </li>
+        <li>
+          <a href="/docs" class="flex items-center space-x-2 px-4 py-2 rounded-md hover:bg-gray-700">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 heartbeat" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <span>Docs</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- Desktop Header -->
+  <header class="hidden md:flex bg-gray-800 py-4 px-6 shadow-md items-center rounded-bl-3xl rounded-br-3xl sticky-header">
+    <div class="container mx-auto flex justify-between items-center">
+      <div class="flex items-center space-x-3">
+        <img src="https://telegra.ph/file/c2a4d8d65722553da4c89.jpg" alt="Logo" class="w-10 h-10 rounded-full">
+        <h1 class="text-xl font-bold">Gifted Cdn</h1>
+      </div>
+      <nav>
+        <ul class="flex space-x-6">
+          <li>
+            <a href="/" class="flex items-center space-x-1 hover:text-primary transition active-nav-item">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 heartbeat" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+              </svg>
+              <span>Home</span>
+            </a>
+          </li>
+          <li>
+            <a href="/delete" class="flex items-center space-x-1 hover:text-primary transition">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 heartbeat" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+              <span>Delete</span>
+            </a>
+          </li>
+          <li>
+            <a href="/contact" class="flex items-center space-x-1 hover:text-primary transition">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 heartbeat" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              <span>Contact</span>
+            </a>
+          </li>
+          <li>
+            <a href="/docs" class="flex items-center space-x-1 hover:text-primary transition">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 heartbeat" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              <span>Docs</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Mobile Header -->
+  <header class="md:hidden bg-gray-800 py-4 px-6 shadow-md flex justify-between items-center sticky-header rounded-bl-3xl rounded-br-3xl mobile-header">
+    <div class="flex items-center space-x-3">
+      <img src="https://telegra.ph/file/c2a4d8d65722553da4c89.jpg" alt="Logo" class="w-10 h-10 rounded-full">
+      <h1 class="text-xl font-bold">Gifted Cdn</h1>
+    </div>
+    <button id="mobile-menu-button" class="text-gray-400 hover:text-white">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </header>
+
+  <main class="container mx-auto px-4 py-4 flex items-center justify-center min-h-[calc(100vh-80px)] mobile-container">
+    <div class="w-full max-w-lg bg-gray-800 rounded-3xl shadow-lg overflow-hidden mt-4 md:mt-0">
+      <!-- Upload Section -->
+      <div id="upload-section" class="p-6 md:p-8">
+        <h1 id="upload-title" class="text-2xl font-bold mb-6 md:mb-8 text-center text-primary">File Uploader</h1>
+        
+        <div id="dropzone" class="border-2 border-dashed border-primary rounded-2xl p-6 md:p-8 text-center cursor-pointer transition-colors hover:bg-gray-700/10 mb-6">
+          <input type="file" id="file-input" class="hidden">
+          <div class="flex flex-col items-center justify-center space-y-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-primary bouncing-cloud" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+            </svg>
+            <div id="dropzone-text">
+              <p class="text-lg typing-text">Drag and drop files or click to upload</p>
+              <p class="text-sm text-gray-400 underline-animation">Maximum file size: 50MB</p>
+              <p class="text-sm text-gray-400">Supports Any file type that ever exists</p>
+            </div>
+            <div id="file-info" class="hidden w-full text-center">
+              <div id="pre-upload-info" class="space-y-1">
+                <p id="file-name-display" class="font-medium break-all"></p>
+                <p id="file-size-display" class="text-sm text-gray-400"></p>
+              </div>
+              <div id="post-upload-info" class="space-y-3 text-left w-full max-w-xs mx-auto hidden mt-4">
+                <div class="flex justify-between">
+                  <span class="text-gray-400">Size:</span>
+                  <span id="result-size" class="font-medium"></span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-gray-400">Name:</span>
+                  <span id="result-name" class="font-medium break-all"></span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-gray-400">Path:</span>
+                  <span id="result-path" class="font-medium break-all"></span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-gray-400">URL:</span>
+                  <div class="flex items-center">
+                    <span id="result-url" class="font-medium break-all"></span>
+                    <button id="copy-url-btn" class="ml-2 text-primary hover:text-green-600">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-gray-400">Delete Key:</span>
+                  <div class="flex items-center">
+                    <span id="result-delete-key" class="font-medium break-all"></span>
+                    <button id="copy-delete-key-btn" class="ml-2 text-primary hover:text-green-600">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-gray-400">Expiry:</span>
+                  <span id="result-expiry" class="font-medium"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Delete Key Input (hidden by default) -->
+        <div id="delete-key-container" class="mb-4 hidden">
+          <label for="delete-key" class="block text-sm font-medium text-gray-300 mb-1">Delete Key (Optional)</label>
+          <div class="relative">
+            <input 
+              type="text" 
+              id="delete-key" 
+              name="delete-key" 
+              placeholder="Enter delete key(Keep Safe)"
+              class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            >
+            <button id="generate-delete-key" class="absolute right-2 top-2 text-primary hover:text-green-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+            </button>
+          </div>
+          <p class="text-xs text-gray-400 mt-1">If provided, you'll need this key to delete the file later</p>
+        </div>
+        
+        <!-- Turnstile/Upload Button Container -->
+        <div id="auth-container" class="flex justify-center mb-6">
+          <div id="turnstile-container" class="cf-turnstile" data-sitekey="0x4AAAAAAA-coke-OJUp9YaS" data-callback="onTurnstileSuccess"></div>
+          <button id="upload-btn" class="w-1/2 bg-primary hover:bg-green-600 text-white py-3 px-4 rounded-lg font-medium transition hidden blinking-button">
+            <span id="upload-text">Upload File</span>
+            <span id="upload-spinner" class="hidden spinner">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+            </span>
+          </button>
+          <button id="upload-another-btn" class="w-1/2 bg-primary hover:bg-green-600 text-white py-3 px-4 rounded-lg font-medium transition hidden blinking-button">
+            Upload Another File
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Copyright footer -->
+  <footer class="bg-gray-800 py-4 text-center text-gray-400 text-sm">
+    <div class="container mx-auto px-4">
+      &copy; <span id="current-year"></span> 
+      <a href="https://github.com/GiftedTech-Nexus" class="text-green-500 hover:text-green-400 transition">Gifted Tech</a> 
+      <span class="text-purple-500 heartbeat" style="animation: heartbeat 1.5s ease-in-out infinite;">❤</span>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      particlesJS('particles-js', {
+        particles: {
+          number: { value: 80, density: { enable: true, value_area: 800 } },
+          color: { value: "#4CAF50" },
+          shape: { type: "circle" },
+          opacity: { value: 0.7, random: true },
+          size: { value: 3, random: true },
+          line_linked: { enable: true, distance: 150, color: "#4CAF50", opacity: 0.6, width: 1 },
+          move: { enable: true, speed: 2, direction: "none", random: true, straight: false, out_mode: "out" }
+        },
+        interactivity: {
+          detect_on: "canvas",
+          events: {
+            onhover: { enable: true, mode: "repulse" },
+            onclick: { enable: true, mode: "push" }
+          }
+        }
+      });
+      
+      particlesJS('side-menu-particles', {
+        particles: {
+          number: { value: 40, density: { enable: true, value_area: 800 } },
+          color: { value: "#4CAF50" },
+          shape: { type: "circle" },
+          opacity: { value: 0.5, random: true },
+          size: { value: 2, random: true },
+          line_linked: { enable: true, distance: 100, color: "#4CAF50", opacity: 0.4, width: 1 },
+          move: { enable: true, speed: 1, direction: "none", random: true, straight: false, out_mode: "out" }
+        }
+      });
+    });
+
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const closeMobileMenu = document.getElementById('close-mobile-menu');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+    let activeToast = null;
+    
+    function toggleMobileMenu() {
+      mobileMenu.classList.toggle('translate-x-0');
+      mobileMenuOverlay.classList.toggle('hidden');
+      document.body.classList.toggle('overflow-hidden');
+    }
+    
+    mobileMenuButton.addEventListener('click', toggleMobileMenu);
+    closeMobileMenu.addEventListener('click', toggleMobileMenu);
+    mobileMenuOverlay.addEventListener('click', toggleMobileMenu);
+    
+    function showToast(message, type = 'success', persistent = false) {
+      if (activeToast) {
+        clearTimeout(activeToast.timeout);
+        activeToast.element.classList.add('hidden');
+      }
+      
+      const toast = document.getElementById('toast');
+      const toastContent = toast.querySelector('div');
+      
+      toastContent.textContent = message;
+      toastContent.className = `px-4 py-2 rounded-md text-white ${
+        type === 'success' ? 'bg-green-500' : 
+        type === 'error' ? 'bg-red-500' : 
+        'bg-yellow-500'
+      }`;
+      
+      toast.classList.remove('hidden');
+      
+      if (!persistent) {
+        const timeout = setTimeout(() => {
+          toast.classList.add('hidden');
+          if (activeToast && activeToast.timeout === timeout) {
+            activeToast = null;
+          }
+        }, 3000);
+        
+        activeToast = {
+          element: toast,
+          timeout: timeout
+        };
+      } else {
+        activeToast = {
+          element: toast,
+          timeout: null
+        };
+      }
+    }
+    
+    let turnstileToken = null;
+    let currentFile = null;
+    let turnstileCompleted = false;
+    let turnstileWidgetId = null;
+    
+    function onTurnstileSuccess(token) {
+      turnstileToken = token;
+      turnstileCompleted = true;
+      
+      document.getElementById('turnstile-container').style.display = 'none';
+      document.getElementById('delete-key-container').classList.remove('hidden');
+      document.getElementById('upload-btn').classList.remove('hidden');
+      
+      showToast('Security Check Passed');
+    }
+    
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('file-input');
+    
+    dropzone.addEventListener('click', () => {
+      if (!document.getElementById('post-upload-info').classList.contains('hidden')) {
+        return; 
+      }
+      fileInput.click();
+    });
+    
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      dropzone.addEventListener(eventName, preventDefaults, false);
+      document.body.addEventListener(eventName, preventDefaults, false);
+    });
+    
+    function preventDefaults(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    
+    ['dragenter', 'dragover'].forEach(eventName => {
+      dropzone.addEventListener(eventName, highlight, false);
+    });
+    
+    ['dragleave', 'drop'].forEach(eventName => {
+      dropzone.addEventListener(eventName, unhighlight, false);
+    });
+    
+    function highlight() {
+      if (document.getElementById('post-upload-info').classList.contains('hidden')) {
+        dropzone.classList.add('bg-gray-700/10');
+      }
+    }
+    
+    function unhighlight() {
+      dropzone.classList.remove('bg-gray-700/10');
+    }
+    
+    dropzone.addEventListener('drop', handleDrop, false);
+    
+    function handleDrop(e) {
+      if (!document.getElementById('post-upload-info').classList.contains('hidden')) {
+        return; 
+      }
+      
+      const dt = e.dataTransfer;
+      const files = dt.files;
+      
+      if (files.length > 0) {
+        handleFiles(files);
+      }
+    }
+    
+    fileInput.addEventListener('change', function() {
+      if (this.files.length > 0) {
+        handleFiles(this.files);
+      }
+    });
+    
+    function handleFiles(files) {
+      const file = files[0];
+      
+      if (file.size > 100 * 1024 * 1024) { // 100MB limit
+        showToast('File size exceeds 100MB limit', 'error');
+        return;
+      }
+      
+      currentFile = file;
+
+      function formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+      }
+      
+      document.getElementById('dropzone-text').classList.add('hidden');
+      document.getElementById('file-info').classList.remove('hidden');
+      document.getElementById('pre-upload-info').classList.remove('hidden');
+      document.getElementById('file-name-display').textContent = file.name;
+      document.getElementById('file-size-display').textContent = formatFileSize(file.size);
+      
+      if (turnstileCompleted) {
+        return;
+      }
+      
+      if (!document.getElementById('turnstile-container').hasChildNodes()) {
+        turnstileWidgetId = window.turnstile.render(document.getElementById('turnstile-container'), {
+          sitekey: '0x4AAAAAAA-coke-OJUp9YaS',
+          callback: onTurnstileSuccess
+        });
+      }
+    }
+    
+    document.getElementById('generate-delete-key').addEventListener('click', function() {
+      const deleteKey = generateRandomKey(16);
+      document.getElementById('delete-key').value = deleteKey;
+      showToast('Random delete key generated');
+    });
+    
+    function generateRandomKey(length) {
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      let result = '';
+      for (let i = 0; i < length; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return result;
+    }
+    
+    document.getElementById('upload-btn').addEventListener('click', async () => {
+      if (!currentFile) {
+        showToast('Please select a file', 'error');
+        return;
+      }
+      
+      if (!turnstileToken) {
+        showToast('Please complete the CAPTCHA', 'error');
+        return;
+      }
+      
+      const deleteKey = document.getElementById('delete-key').value.trim();
+      
+      const formData = new FormData();
+      formData.append('file', currentFile);
+      if (deleteKey) {
+        formData.append('deleteKey', deleteKey);
+      }
+      
+      try {
+        document.getElementById('upload-text').classList.add('hidden');
+        document.getElementById('upload-spinner').classList.remove('hidden');
+        
+        showToast('Uploading file...', 'warning', true);
+        
+        const response = await fetch('/giftedUpload.php', {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'Turnstile-Token': turnstileToken
+          }
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+          showToast('File uploaded successfully', 'success');
+          
+          document.getElementById('upload-title').textContent = 'File Uploaded Successfully';
+          document.getElementById('pre-upload-info').classList.add('hidden');
+          document.getElementById('post-upload-info').classList.remove('hidden');
+          document.getElementById('result-size').textContent = result.size;
+          document.getElementById('result-name').textContent = result.name;
+          document.getElementById('result-path').textContent = result.path;
+          document.getElementById('result-url').textContent = result.url;
+          document.getElementById('result-delete-key').textContent = result.deleteKey || 'No delete key set';
+          document.getElementById('result-expiry').textContent = result.expiry;
+          
+          document.getElementById('upload-btn').classList.add('hidden');
+          document.getElementById('turnstile-container').style.display = 'none';
+          document.getElementById('delete-key-container').classList.add('hidden');
+          document.getElementById('upload-another-btn').classList.remove('hidden');
+          
+          turnstileToken = null;
+          turnstileCompleted = false;
+        } else {
+          showToast(result.error || 'Upload failed', 'error');
+        }
+      } catch (error) {
+        showToast('An error occurred during upload', 'error');
+        console.error('Upload error:', error);
+      } finally {
+        document.getElementById('upload-text').classList.remove('hidden');
+        document.getElementById('upload-spinner').classList.add('hidden');
+      }
+    });
+    
+    document.getElementById('upload-another-btn').addEventListener('click', () => {
+      resetUploadUI();
+      
+      document.getElementById('upload-btn').classList.add('hidden');
+      
+      document.getElementById('turnstile-container').style.display = 'block';
+      if (window.turnstile && turnstileWidgetId) {
+        window.turnstile.reset(turnstileWidgetId);
+      }
+    });
+    
+    document.getElementById('copy-url-btn').addEventListener('click', () => {
+      const url = document.getElementById('result-url').textContent;
+      navigator.clipboard.writeText(url)
+        .then(() => {
+          showToast('URL copied to clipboard');
+        })
+        .catch(() => {
+          showToast('Failed to copy URL', 'error');
+        });
+    });
+    
+    document.getElementById('copy-delete-key-btn').addEventListener('click', () => {
+      const deleteKey = document.getElementById('result-delete-key').textContent;
+      if (deleteKey === 'No delete key set') {
+        showToast('No delete key to copy', 'error');
+        return;
+      }
+      navigator.clipboard.writeText(deleteKey)
+        .then(() => {
+          showToast('Delete key copied to clipboard');
+        })
+        .catch(() => {
+          showToast('Failed to copy delete key', 'error');
+        });
+    });
+    
+    function resetUploadUI() {
+      document.getElementById('file-input').value = '';
+      document.getElementById('dropzone-text').classList.remove('hidden');
+      document.getElementById('file-info').classList.add('hidden');
+      document.getElementById('pre-upload-info').classList.add('hidden');
+      document.getElementById('post-upload-info').classList.add('hidden');
+      document.getElementById('upload-title').textContent = 'File Uploader';
+      document.getElementById('upload-another-btn').classList.add('hidden');
+      document.getElementById('upload-btn').classList.add('hidden');
+      document.getElementById('delete-key').value = '';
+      document.getElementById('delete-key-container').classList.add('hidden');
+      currentFile = null;
+    }
+  </script>
+</body>
+</html>

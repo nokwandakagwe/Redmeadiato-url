@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Gifted File Cdn - Easily upload  & managefiles with a user-friendly interface. Supports all file types.">
+  <meta property="og:title" content="Gifted File Cdn">
+  <meta property="og:description" content="Upload & manage files quickly and easily with Gifted Cdn. Supports all file types.">
+  <meta property="og:image" content="https://telegra.ph/file/c2a4d8d65722553da4c89.jpg">
+  <meta property="og:url" content="https://cdn.giftedtech.web.id/upload">
+  <title>GIFTED CDN || CONTACT US</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <style>
+    .spinner {
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .sticky-header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+    /* Mobile header spacing adjustment */
+    @media (max-width: 767px) {
+      .mobile-header {
+        margin-bottom: 0 !important;
+      }
+      .mobile-container {
+        margin-top: 0 !important;
+      }
+    }
+    /* Animations */
+    .blinking-button {
+      animation: blink 2s infinite;
+    }
+    @keyframes blink {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); }
+      50% { box-shadow: 0 0 0 10px rgba(76, 175, 80, 0); }
+    }
+    .heartbeat {
+      animation: heartbeat 1.5s infinite;
+    }
+    @keyframes heartbeat {
+      0% { transform: scale(1); opacity: 1; }
+      25% { transform: scale(1.1); opacity: 0.8; }
+      50% { transform: scale(1); opacity: 1; }
+      75% { transform: scale(1.1); opacity: 0.8; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .bouncing-cloud {
+      animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    .typing-text {
+      border-right: 2px solid;
+      animation: typing 3s steps(40) forwards, blink-caret 0.75s step-end infinite;
+      white-space: nowrap;
+      overflow: hidden;
+      display: inline-block;
+    }
+    @keyframes typing {
+      0% { width: 0 }
+      100% { width: 100% }
+    }
+    @keyframes blink-caret {
+      from, to { border-color: transparent }
+      50% { border-color: #4CAF50 }
+    }
+    .underline-animation {
+      position: relative;
+      display: inline-block;
+    }
+    .underline-animation:after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -2px;
+      left: 0;
+      background-color: #4CAF50;
+      animation: underline 3s linear infinite;
+    }
+    @keyframes underline {
+      0% { width: 0; left: 0; }
+      50% { width: 100%; left: 0; }
+      100% { width: 0; left: 100%; }
+    }
+    .active-nav-item {
+      position: relative;
+      color: #4CAF50 !important;
+    }
+    .active-nav-item:before {
+      content: '';
+      position: absolute;
+      left: -10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 4px;
+      height: 20px;
+      background-color: #4CAF50;
+      border-radius: 2px;
+    }
+    .active-nav-item:after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: #4CAF50;
+    }
+    #particles-js {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      opacity: 0.5;
+    }
+    .side-menu-bg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      background: linear-gradient(135deg, rgba(46,52,64,0.8) 0%, rgba(59,66,82,0.8) 100%);
+    }
+    .side-menu-particles {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      opacity: 0.5;
+    }
+    .file-upload {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      border: 2px dashed #4CAF50;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      min-height: 200px;
+    }
+    .file-upload:hover {
+      background-color: rgba(76, 175, 80, 0.1);
+    }
+    .file-upload input {
+      display: none;
+    }
+    .file-upload-label {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .file-name {
+      margin-top: 0.5rem;
+      font-size: 0.875rem;
+      color: #4CAF50;
+    }
+    .upload-icon {
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    .placeholder-typing {
+      position: relative;
+    }
+    .placeholder-typing::after {
+      content: attr(data-placeholder);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      color: #9CA3AF;
+      animation: typing-placeholder 2s steps(30) forwards;
+    }
+    @keyframes typing-placeholder {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+    .success-message {
+      animation: fadeInUp 0.5s ease-out forwards;
+    }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#4CAF50',
+            secondary: '#2d3748',
+            danger: '#f44336',
+            dark: '#121212',
+            'dark-light': '#1e1e1e',
+          },
+          borderRadius: {
+            'xl': '1rem',
+            '2xl': '2rem',
+            '3xl': '3rem',
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen">
+  <!-- Futuristic Background -->
+  <div id="particles-js"></div>
+  
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed top-4 right-4 z-50 hidden">
+    <div class="px-4 py-2 rounded-md text-white"></div>
+  </div>
+  
+  <!-- Mobile Side Menu Overlay -->
+  <div id="mobile-menu-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden backdrop-blur-sm"></div>
+  
+  <!-- Mobile Side Menu -->
+  <div id="mobile-menu" class="fixed inset-y-0 left-0 w-64 bg-gray-800 z-50 transform -translate-x-full transition-transform duration-300 ease-in-out rounded-br-3xl rounded-tr-3xl overflow-hidden">
+    <div class="side-menu-bg"></div>
+    <div class="side-menu-particles" id="side-menu-particles"></div>
+    
+    <div class="flex justify-between items-center p-4 border-b border-gray-700 relative">
+      <div class="flex items-center space-x-2">
+        <img src="https://telegra.ph/file/c2a4d8d65722553da4c89.jpg" alt="Logo" class="w-10 h-10 rounded-full">
+        <span class="font-bold">Gifted Cdn</span>
+      </div>
+      <button id="close-mobile-menu" class="text-gray-400 hover:text-white">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+    <nav class="p-4 relative">
+      <ul class="space-y-2">
+        <li>
+          <a href="/" class="flex items-center space-x-2 px-4 py-2 rounded-md hover:bg-gray-700">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 heartbeat" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+            </svg>
+            <span>Home</span>
+          </a>
+        </li>
+        <li>
+          <a href="/delete" class="flex items-center space-x-2 px-4 py-2 rounded-md hover:bg-gray-700">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 heartbeat" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            </svg>
+            <span>Delete</span>
+          </a>
+        </li>
+        <li>
+          <a href="/contact" class="flex items-center space-x-2 px-4 py-2 rounded-md hover:bg-gray-700 active-nav-item">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 heartbeat" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+            <span>Contact</span>
+          </a>
+        </li>
+        <li>
+          <a href="/docs" class="flex items-center space-x-2 px-4 py-2 rounded-md hover:bg-gray-700">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 heartbeat" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <span>Docs</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- Desktop Header -->
+  <header class="hidden md:flex bg-gray-800 py-4 px-6 shadow-md items-center rounded-bl-3xl rounded-br-3xl sticky-header">
+    <div class="container mx-auto flex justify-between items-center">
+      <div class="flex items-center space-x-3">
+        <img src="https://telegra.ph/file/c2a4d8d65722553da4c89.jpg" alt="Logo" class="w-10 h-10 rounded-full">
+        <h1 class="text-xl font-bold">Gifted Cdn</h1>
+      </div>
+      <nav>
+        <ul class="flex space-x-6">
+          <li>
+            <a href="/" class="flex items-center space-x-1 hover:text-primary transition">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 heartbeat" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+              </svg>
+              <span>Home</span>
+            </a>
+          </li>
+          <li>
+            <a href="/delete" class="flex items-center space-x-1 hover:text-primary transition">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 heartbeat" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+              <span>Delete</span>
+            </a>
+          </li>
+          <li>
+            <a href="/contact" class="flex items-center space-x-1 hover:text-primary transition active-nav-item">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 heartbeat" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              <span>Contact</span>
+            </a>
+          </li>
+          <li>
+            <a href="/docs" class="flex items-center space-x-1 hover:text-primary transition">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 heartbeat" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              <span>Docs</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Mobile Header -->
+  <header class="md:hidden bg-gray-800 py-4 px-6 shadow-md flex justify-between items-center sticky-header rounded-bl-3xl rounded-br-3xl mobile-header">
+    <div class="flex items-center space-x-3">
+      <img src="https://telegra.ph/file/c2a4d8d65722553da4c89.jpg" alt="Logo" class="w-10 h-10 rounded-full">
+      <h1 class="text-xl font-bold">Gifted Cdn</h1>
+    </div>
+    <button id="mobile-menu-button" class="text-gray-400 hover:text-white">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </header>
+
+  <main class="container mx-auto px-4 py-4 flex items-center justify-center min-h-[calc(100vh-80px)] mobile-container">
+    <div class="w-full max-w-lg bg-gray-800 rounded-3xl shadow-lg overflow-hidden mt-4 md:mt-0">
+      <!-- Contact Form Section -->
+      <div id="contact-section" class="p-6 md:p-8">
+        <h1 id="contact-title" class="text-2xl font-bold mb-6 md:mb-8 text-center text-primary">Contact Us</h1>
+        
+        <form id="contact-form" class="space-y-4">
+          <div>
+            <label for="contact-name" class="block text-sm font-medium text-gray-300 mb-2">Your Name</label>
+            <input type="text" id="contact-name" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary" placeholder="" required>
+            <div class="placeholder-typing" data-placeholder="Your Name"></div>
+          </div>
+          
+          <div>
+            <label for="contact-email" class="block text-sm font-medium text-gray-300 mb-2">Email Address</label>
+            <input type="email" id="contact-email" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary" placeholder="" required>
+            <div class="placeholder-typing" data-placeholder="abc@email.com"></div>
+          </div>
+          
+          <div>
+            <label for="contact-phone" class="block text-sm font-medium text-gray-300 mb-2">Phone Number </label>
+            <input type="tel" id="contact-phone" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary" placeholder="" pattern="^\+\d{1,3}\d{4,14}$" required>
+            <div class="placeholder-typing" data-placeholder="+254xxxxxxxxx(Intl Format)"></div>
+          </div>
+          
+          <div>
+            <label for="contact-message" class="block text-sm font-medium text-gray-300 mb-2">Message</label>
+            <textarea id="contact-message" rows="4" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary" placeholder="" required></textarea>
+            <div class="placeholder-typing" data-placeholder="Your message here..."></div>
+          </div>
+          
+          <div class="file-upload" id="file-upload-container">
+            <input type="file" id="contact-file" class="file-input">
+            <label for="contact-file" class="file-upload-label">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-primary mb-2 upload-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+              </svg>
+              <p class="text-gray-300">Drag & Drop/Click to upload a file</p>
+              <p class="text-xs text-gray-400 mt-1">Max file size: 20MB</p>
+            </label>
+            <div id="file-name" class="file-name hidden"></div>
+          </div>
+          
+          <!-- Submit Button -->
+          <button type="submit" id="submit-btn" class="w-full bg-primary hover:bg-green-600 text-white py-3 px-4 rounded-lg font-medium transition blinking-button">
+            <span id="submit-text">Send Message</span>
+            <span id="submit-spinner" class="hidden spinner">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+            </span>
+          </button>
+        </form>
+        
+        <!-- Success Message Section -->
+        <div id="success-section" class="hidden success-message text-center py-8">
+          <div class="mb-6">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-primary mx-auto heartbeat" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h2 class="text-2xl font-bold mb-2 text-primary">Message Sent Successfully!</h2>
+          <p class="text-gray-300 mb-6">Thank you for contacting us. We'll get back to you soon.</p>
+          <button id="new-message-btn" class="bg-primary hover:bg-green-600 text-white py-2 px-6 rounded-lg font-medium transition">
+            Send New Message
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Copyright footer -->
+  <footer class="bg-gray-800 py-4 text-center text-gray-400 text-sm">
+    <div class="container mx-auto px-4">
+      &copy; <span id="current-year"></span> 
+      <a href="https://github.com/GiftedTech-Nexus" class="text-green-500 hover:text-green-400 transition">Gifted Tech</a> 
+      <span class="text-purple-500 heartbeat" style="animation: heartbeat 1.5s ease-in-out infinite;">❤</span>
+    </div>
+  </footer>
+
+  <script>
+    // Initialize particles.js for main background
+    document.addEventListener('DOMContentLoaded', function() {
+      particlesJS('particles-js', {
+        particles: {
+          number: { value: 80, density: { enable: true, value_area: 800 } },
+          color: { value: "#4CAF50" },
+          shape: { type: "circle" },
+          opacity: { value: 0.7, random: true },
+          size: { value: 3, random: true },
+          line_linked: { enable: true, distance: 150, color: "#4CAF50", opacity: 0.6, width: 1 },
+          move: { enable: true, speed: 2, direction: "none", random: true, straight: false, out_mode: "out" }
+        },
+        interactivity: {
+          detect_on: "canvas",
+          events: {
+            onhover: { enable: true, mode: "repulse" },
+            onclick: { enable: true, mode: "push" }
+          }
+        }
+      });
+      
+      // Initialize particles.js for side menu
+      particlesJS('side-menu-particles', {
+        particles: {
+          number: { value: 40, density: { enable: true, value_area: 800 } },
+          color: { value: "#4CAF50" },
+          shape: { type: "circle" },
+          opacity: { value: 0.5, random: true },
+          size: { value: 2, random: true },
+          line_linked: { enable: true, distance: 100, color: "#4CAF50", opacity: 0.4, width: 1 },
+          move: { enable: true, speed: 1, direction: "none", random: true, straight: false, out_mode: "out" }
+        }
+      });
+
+      // Set placeholders after typing animation completes
+      setTimeout(() => {
+        document.getElementById('contact-name').placeholder = "Your Name";
+        document.getElementById('contact-email').placeholder = "abc@email.com";
+        document.getElementById('contact-phone').placeholder = "eg +254xxxxxxxxx";
+        document.getElementById('contact-message').placeholder = "Your Message...";
+        
+        // Remove the typing animation elements
+        document.querySelectorAll('.placeholder-typing').forEach(el => el.remove());
+      }, 2000);
+    });
+
+    // Set current year in footer
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+
+    // Mobile menu functionality
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const closeMobileMenu = document.getElementById('close-mobile-menu');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+    let activeToast = null;
+    
+    function toggleMobileMenu() {
+      mobileMenu.classList.toggle('translate-x-0');
+      mobileMenuOverlay.classList.toggle('hidden');
+      document.body.classList.toggle('overflow-hidden');
+    }
+    
+    mobileMenuButton.addEventListener('click', toggleMobileMenu);
+    closeMobileMenu.addEventListener('click', toggleMobileMenu);
+    mobileMenuOverlay.addEventListener('click', toggleMobileMenu);
+    
+    // Toast notification function
+    function showToast(message, type = 'success', persistent = false) {
+      if (activeToast) {
+        clearTimeout(activeToast.timeout);
+        activeToast.element.classList.add('hidden');
+      }
+      
+      const toast = document.getElementById('toast');
+      const toastContent = toast.querySelector('div');
+      
+      toastContent.textContent = message;
+      toastContent.className = `px-4 py-2 rounded-md text-white ${
+        type === 'success' ? 'bg-green-500' : 
+        type === 'error' ? 'bg-red-500' : 
+        'bg-yellow-500'
+      }`;
+      
+      toast.classList.remove('hidden');
+      
+      if (!persistent) {
+        const timeout = setTimeout(() => {
+          toast.classList.add('hidden');
+          if (activeToast && activeToast.timeout === timeout) {
+            activeToast = null;
+          }
+        }, 3000);
+        
+        activeToast = {
+          element: toast,
+          timeout: timeout
+        };
+      } else {
+        activeToast = {
+          element: toast,
+          timeout: null
+        };
+      }
+    }
+    
+    // File upload handling
+    const fileInput = document.getElementById('contact-file');
+    const fileNameDisplay = document.getElementById('file-name');
+    const fileUploadContainer = document.getElementById('file-upload-container');
+    
+    fileInput.addEventListener('change', function(e) {
+      if (this.files && this.files[0]) {
+        const file = this.files[0];
+        
+        // Validate file size (20MB max)
+        if (file.size > 20 * 1024 * 1024) {
+          showToast('File size exceeds 20MB limit', 'error');
+          this.value = '';
+          return;
+        }
+        
+        fileNameDisplay.textContent = file.name;
+        fileNameDisplay.classList.remove('hidden');
+        fileUploadContainer.classList.add('border-primary', 'bg-gray-700/30');
+      }
+    });
+    
+    // Form submission
+    document.getElementById('contact-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const name = document.getElementById('contact-name').value.trim();
+      const email = document.getElementById('contact-email').value.trim();
+      const phone = document.getElementById('contact-phone').value.trim();
+      const message = document.getElementById('contact-message').value.trim();
+      const file = fileInput.files[0];
+      
+      // Validate inputs
+      if (!name || !email || !phone || !message) {
+        showToast('Please fill in all required fields', 'error');
+        return;
+      }
+      
+      // Validate phone format
+      const phoneRegex = /^\+\d{1,3}\d{4,14}$/;
+      if (!phoneRegex.test(phone)) {
+        showToast('Please enter a valid international phone number', 'error');
+        return;
+      }
+      
+      try {
+        // Show loading spinner
+        document.getElementById('submit-text').classList.add('hidden');
+        document.getElementById('submit-spinner').classList.remove('hidden');
+        document.getElementById('submit-btn').disabled = true;
+        
+        showToast('Sending message...', 'warning', true);
+        
+        // Create FormData for file upload
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('email', email);
+        formData.append('phone', phone);
+        formData.append('message', message);
+        if (file) {
+          formData.append('file', file);
+        }
+        
+        // Send data to API
+        const response = await fetch('/api/sendMessage.php', {
+          method: 'POST',
+          body: formData
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+          showToast('Message sent successfully!', 'success');
+          
+          // Hide form and show success message
+          document.getElementById('contact-form').classList.add('hidden');
+          document.getElementById('success-section').classList.remove('hidden');
+          document.getElementById('contact-title').classList.add('hidden');
+        } else {
+          showToast(result.error || 'Failed to send message', 'error');
+        }
+      } catch (error) {
+        showToast('An error occurred while sending your message', 'error');
+        console.error('Submission error:', error);
+      } finally {
+        // Hide loading spinner
+        document.getElementById('submit-text').classList.remove('hidden');
+        document.getElementById('submit-spinner').classList.add('hidden');
+        document.getElementById('submit-btn').disabled = false;
+      }
+    });
+
+    // New message button functionality
+    document.getElementById('new-message-btn').addEventListener('click', function() {
+      // Reset form
+      document.getElementById('contact-form').reset();
+      fileNameDisplay.classList.add('hidden');
+      fileUploadContainer.classList.remove('border-primary', 'bg-gray-700/30');
+      
+      // Show form and hide success message
+      document.getElementById('contact-form').classList.remove('hidden');
+      document.getElementById('success-section').classList.add('hidden');
+      document.getElementById('contact-title').classList.remove('hidden');
+    });
+  </script>
+</body>
+</html>

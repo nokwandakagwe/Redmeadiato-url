@@ -1,0 +1,45 @@
+{
+  "name": "gifted-cdn",
+  "version": "1.2.6",
+  "description": "File management service",
+  "main": "./api/index.js",
+  "scripts": {
+    "start": "node ./api/index.js",
+    "dev": "nodemon ./api/index.js",
+    "test": "jest --verbose",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "pm2:start": "pm2 start ./api/index.js --name gifted-cdn",
+    "pm2:stop": "pm2 stop gifted-cdn",
+    "pm2:restart": "pm2 restart gifted-cdn",
+    "pm2:delete": "pm2 delete gifted-cdn",
+    "pm2:logs": "pm2 logs gifted-cdn",
+    "pm2:status": "pm2 status",
+    "pm2:monit": "pm2 monit",
+    "pm2:start:prod": "NODE_ENV=production pm2 start ./api/index.js --name gifted-cdn --update-env",
+    "pm2:reload": "pm2 reload gifted-cdn",
+    "pm2:save": "pm2 save",
+    "pm2:startup": "pm2 startup",
+    "pm2:install": "npm install pm2 -g"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "*",
+    "@vercel/blob": "*",
+    "axios": "^1.9.0",
+    "cors": "^2.8.5",
+    "dotenv": "*",
+    "express": "*",
+    "express-rate-limit": "^7.5.0",
+    "form-data": "^4.0.2",
+    "helmet": "^8.1.0",
+    "mongoose": "*",
+    "multer": "*",
+    "winston": "^3.17.0"
+  },
+  "devDependencies": {
+    "eslint": "*",
+    "jest": "*",
+    "nodemon": "*",
+    "prettier": "*"
+  }
+}
