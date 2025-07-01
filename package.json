@@ -26,7 +26,7 @@
     "@aws-sdk/client-s3": "*",
     "axios": "*",
     "cors": "*",
-    "pm2": "*",
+    "pm2": "latest",
     "dotenv": "*",
     "express": "*",
     "express-rate-limit": "*",
