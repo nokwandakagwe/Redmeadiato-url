@@ -7,7 +7,7 @@ chatId: process.env.CHAT_ID || '', // For Telegram Contact Form Submission
 cfBucketName: process.env.CF_BUCKET_NAME || "files", // Your Cloudflare R2 Bucket Name
 telegramApiUrl: process.env.TELEGRAM_API_URL || "https://api.telegram.org", // Maintain this 
 botToken: process.env.BOT_TOKEN || '', // For Telegram Contact Form Submission
-cfBucketDomain: process.env.CF_BUCKET_DOMAIN || "files.giftedtech.web.id", // Your Cloudflare R2 Public Access Domain/Custom Binded Domain
+cfBucketDomain: process.env.CF_BUCKET_DOMAIN || "files.giftedtech.web.id", // Your Cloudflare R2 Public Access Domain/Your Custom Binded Domain
 cfTurnstileSecret: process.env.CF_TURNSTILE_SECRET_KEY || "", // Your Cloudflare Turnstile Secret Key
 cfAccessKeyId: process.env.CF_ACCESS_KEY_ID || "", // Your Cloudflare Access Key Id
 cfTurnstileApiUrl: process.env.CF_TURNSTILE_API_URL || "https://challenges.cloudflare.com",
