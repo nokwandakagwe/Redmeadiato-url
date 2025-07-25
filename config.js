@@ -11,8 +11,8 @@ cfBucketDomain: process.env.CF_BUCKET_DOMAIN || "files.giftedtech.web.id", // Yo
 cfTurnstileSecret: process.env.CF_TURNSTILE_SECRET_KEY || "", // Your Cloudflare Turnstile Secret Key
 cfAccessKeyId: process.env.CF_ACCESS_KEY_ID || "", // Your Cloudflare Access Key Id
 cfTurnstileApiUrl: process.env.CF_TURNSTILE_API_URL || "https://challenges.cloudflare.com",
-cfApiEndpoint: process.env.CF_ENDPOINT || "", // Your Cloudflare Storage Api Endpoint
-cfSecretAccessKey: process.env.CF_SECRET_ACCESS_KEY || "",// Your Cloudflare Secret Secret Key
+cfApiEndpoint: process.env.CF_BUCKET_API_ENDPOINT || "", // Your Cloudflare Bucket Storage Api Endpoint
+cfSecretAccessKey: process.env.CF_SECRET_ACCESS_KEY || "",// Your Cloudflare Secret Access Key
 mongoUri: process.env.MONGO_URI || "", // Your MongoDb Uri
 imageMimetypes: process.env.IMAGE_MIMETYPES || "['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml', 'image/avif', 'image/heif', 'image/heic', 'image/x-icon', 'image/tiff']",
 audioMimetypes: process.env.AUDIO_MIMETYPES || "['audio/mp3', 'audio/mp4', 'audio/mpeg', 'audio/wav', 'audio/ogg', 'audio/webm', 'audio/x-midi', 'audio/midi', 'audio/x-ms-wma', 'audio/x-m4a', 'audio/flac', 'audio/aac', 'audio/webm', 'audio/wave']",
